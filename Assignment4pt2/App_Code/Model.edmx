@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ShowTrackerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Artist">
+          <Key>
+            <PropertyRef Name="ArtistKey" />
+          </Key>
+          <Property Name="ArtistKey" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ArtistName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ArtistEmail" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ArtistWebPage" Type="nvarchar" MaxLength="255" />
+          <Property Name="ArtistDateEntered" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Show">
+          <Key>
+            <PropertyRef Name="ShowKey" />
+          </Key>
+          <Property Name="ShowKey" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShowName" Type="nvarchar" MaxLength="255" />
+          <Property Name="VenueKey" Type="int" />
+          <Property Name="ShowDate" Type="date" Nullable="false" />
+          <Property Name="ShowTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="ShowTicketInfo" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ShowDateEntered" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ShowDetail">
+          <Key>
+            <PropertyRef Name="ShowDetailKey" />
+          </Key>
+          <Property Name="ShowDetailKey" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShowKey" Type="int" />
+          <Property Name="ArtistKey" Type="int" />
+          <Property Name="ShowDetailArtistStartTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="ShowDetailAdditional" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <Association Name="FK__ShowDetai__Artis__1B0907CE">
+          <End Role="Artist" Type="Self.Artist" Multiplicity="0..1" />
+          <End Role="ShowDetail" Type="Self.ShowDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Artist">
+              <PropertyRef Name="ArtistKey" />
+            </Principal>
+            <Dependent Role="ShowDetail">
+              <PropertyRef Name="ArtistKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ShowDetai__ShowK__1A14E395">
+          <End Role="Show" Type="Self.Show" Multiplicity="0..1" />
+          <End Role="ShowDetail" Type="Self.ShowDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Show">
+              <PropertyRef Name="ShowKey" />
+            </Principal>
+            <Dependent Role="ShowDetail">
+              <PropertyRef Name="ShowKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ShowTrackerModelStoreContainer">
+          <EntitySet Name="Artist" EntityType="Self.Artist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Show" EntityType="Self.Show" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ShowDetail" EntityType="Self.ShowDetail" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__ShowDetai__Artis__1B0907CE" Association="Self.FK__ShowDetai__Artis__1B0907CE">
+            <End Role="Artist" EntitySet="Artist" />
+            <End Role="ShowDetail" EntitySet="ShowDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ShowDetai__ShowK__1A14E395" Association="Self.FK__ShowDetai__ShowK__1A14E395">
+            <End Role="Show" EntitySet="Show" />
+            <End Role="ShowDetail" EntitySet="ShowDetail" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ShowTrackerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Artist">
+          <Key>
+            <PropertyRef Name="ArtistKey" />
+          </Key>
+          <Property Name="ArtistKey" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArtistName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ArtistEmail" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ArtistWebPage" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ArtistDateEntered" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ShowDetails" Relationship="Self.FK__ShowDetai__Artis__1B0907CE" FromRole="Artist" ToRole="ShowDetail" />
+        </EntityType>
+        <EntityType Name="Show">
+          <Key>
+            <PropertyRef Name="ShowKey" />
+          </Key>
+          <Property Name="ShowKey" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShowName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="VenueKey" Type="Int32" />
+          <Property Name="ShowDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ShowTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="ShowTicketInfo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ShowDateEntered" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ShowDetails" Relationship="Self.FK__ShowDetai__ShowK__1A14E395" FromRole="Show" ToRole="ShowDetail" />
+        </EntityType>
+        <EntityType Name="ShowDetail">
+          <Key>
+            <PropertyRef Name="ShowDetailKey" />
+          </Key>
+          <Property Name="ShowDetailKey" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShowKey" Type="Int32" />
+          <Property Name="ArtistKey" Type="Int32" />
+          <Property Name="ShowDetailArtistStartTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="ShowDetailAdditional" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Artist" Relationship="Self.FK__ShowDetai__Artis__1B0907CE" FromRole="ShowDetail" ToRole="Artist" />
+          <NavigationProperty Name="Show" Relationship="Self.FK__ShowDetai__ShowK__1A14E395" FromRole="ShowDetail" ToRole="Show" />
+        </EntityType>
+        <Association Name="FK__ShowDetai__Artis__1B0907CE">
+          <End Role="Artist" Type="Self.Artist" Multiplicity="0..1" />
+          <End Role="ShowDetail" Type="Self.ShowDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Artist">
+              <PropertyRef Name="ArtistKey" />
+            </Principal>
+            <Dependent Role="ShowDetail">
+              <PropertyRef Name="ArtistKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ShowDetai__ShowK__1A14E395">
+          <End Role="Show" Type="Self.Show" Multiplicity="0..1" />
+          <End Role="ShowDetail" Type="Self.ShowDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Show">
+              <PropertyRef Name="ShowKey" />
+            </Principal>
+            <Dependent Role="ShowDetail">
+              <PropertyRef Name="ShowKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ShowTrackerEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Artists" EntityType="Self.Artist" />
+          <EntitySet Name="Shows" EntityType="Self.Show" />
+          <EntitySet Name="ShowDetails" EntityType="Self.ShowDetail" />
+          <AssociationSet Name="FK__ShowDetai__Artis__1B0907CE" Association="Self.FK__ShowDetai__Artis__1B0907CE">
+            <End Role="Artist" EntitySet="Artists" />
+            <End Role="ShowDetail" EntitySet="ShowDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ShowDetai__ShowK__1A14E395" Association="Self.FK__ShowDetai__ShowK__1A14E395">
+            <End Role="Show" EntitySet="Shows" />
+            <End Role="ShowDetail" EntitySet="ShowDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ShowTrackerModelStoreContainer" CdmEntityContainer="ShowTrackerEntities">
+          <EntitySetMapping Name="Artists">
+            <EntityTypeMapping TypeName="ShowTrackerModel.Artist">
+              <MappingFragment StoreEntitySet="Artist">
+                <ScalarProperty Name="ArtistKey" ColumnName="ArtistKey" />
+                <ScalarProperty Name="ArtistName" ColumnName="ArtistName" />
+                <ScalarProperty Name="ArtistEmail" ColumnName="ArtistEmail" />
+                <ScalarProperty Name="ArtistWebPage" ColumnName="ArtistWebPage" />
+                <ScalarProperty Name="ArtistDateEntered" ColumnName="ArtistDateEntered" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Shows">
+            <EntityTypeMapping TypeName="ShowTrackerModel.Show">
+              <MappingFragment StoreEntitySet="Show">
+                <ScalarProperty Name="ShowKey" ColumnName="ShowKey" />
+                <ScalarProperty Name="ShowName" ColumnName="ShowName" />
+                <ScalarProperty Name="VenueKey" ColumnName="VenueKey" />
+                <ScalarProperty Name="ShowDate" ColumnName="ShowDate" />
+                <ScalarProperty Name="ShowTime" ColumnName="ShowTime" />
+                <ScalarProperty Name="ShowTicketInfo" ColumnName="ShowTicketInfo" />
+                <ScalarProperty Name="ShowDateEntered" ColumnName="ShowDateEntered" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ShowDetails">
+            <EntityTypeMapping TypeName="ShowTrackerModel.ShowDetail">
+              <MappingFragment StoreEntitySet="ShowDetail">
+                <ScalarProperty Name="ShowDetailKey" ColumnName="ShowDetailKey" />
+                <ScalarProperty Name="ShowKey" ColumnName="ShowKey" />
+                <ScalarProperty Name="ArtistKey" ColumnName="ArtistKey" />
+                <ScalarProperty Name="ShowDetailArtistStartTime" ColumnName="ShowDetailArtistStartTime" />
+                <ScalarProperty Name="ShowDetailAdditional" ColumnName="ShowDetailAdditional" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
